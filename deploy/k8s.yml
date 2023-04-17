@@ -27,8 +27,11 @@ spec:
         - name: DEBUG
           value: "False"
         - name: SECRET_KEY
-          secret:
-            secretName: ocho_secret_key
+          valueFrom:
+            secretKeyRef:
+              name: ocho-secrets
+              key: SECRET_KEY
+
         ports:
         - containerPort: 8000
         readinessProbe:
