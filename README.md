@@ -60,7 +60,7 @@ export DB_PORT='db_port'
 # example
 $ docker build -t jorgechato/ocho:1.0.0 .
 # add as many env as required. Check the assumptions section for more info
-$ docker run --rm -e DEBUG=$DEBUG -e SECRET_KEY=$SECRET_KEY jorgechato/ocho:1.0.0
+$ docker run --rm -e DEBUG=$DEBUG -e SECRET_KEY=$SECRET_KEY -p 8000:8000 jorgechato/ocho:1.0.0
 ```
 
 ### Kubernetes
