@@ -22,3 +22,5 @@ docs/site
 .DS_Store
 .idea
 data
+
+*.sqlite3

@@ -21,8 +21,6 @@ We are using the `django-health-check` package for that. It will check the datab
 
 **Some assumptions:**
 
-- You have a running postgres database with the name `ocho` and the user `ocho` with the password `ocho`.
-    You can change the database name, user and password in the `settings.py` file.
 - You have the required environment variables set. The k8s files are using the `secrets.yml` file to set the environment variables.
     You can also set them in the `settings.py` file. If you are using docker, you can set them in the `Dockerfile` file, or if you are runnign it locally, you can set them in the `.env` file.
     I highly recommend using the `direnv` for local environments. Please generate a secret key with `python manage.py shell -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'` and set it in the `.envrc` file.
@@ -31,6 +29,8 @@ We are using the `django-health-check` package for that. It will check the datab
 # .envrc file
 export DEBUG=True
 export SECRET_KEY='xxx'
+
+# NOT required for this version
 export DB_NAME='db_name'
 export DB_USER='db_username'
 export DB_PASSWORD='password'
@@ -91,7 +91,7 @@ You can create the secrets with the following command:
 $ kubectl create secret generic ocho-secrets --from-literal=SECRET_KEY=$SECRET_KEY --from-literal=DB_NAME=$DB_NAME --from-literal=DB_USER=$DB_USER --from-literal=DB_PASSWORD=$DB_PASSWORD --from-literal=DB_HOST=$DB_HOST --from-literal=DB_PORT=$DB_PORT
 ```
 
-**Postgres**
+**Postgres (for next version)**
 
 This app uses Postgress as the database. I'm using the official Postgres image for local environments. For production environments, I would use a managed Postgres service.
 We asume that postgress is already up and running. I won't go into details on how to deploy it but, as personal note, k8s is not the best place to set up a database.
