@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('django_prometheus.urls')),
     path('health-check/', include('health_check.urls')),
+    path('meter/', include('meter.urls')),
 ]
