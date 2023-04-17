@@ -1,0 +1,17 @@
+*.pyc
+.venv*
+.envrc
+.vscode
+.mypy_cache
+.coverage
+htmlcov
+
+dist
+test.py
+
+docs/site
+
+.DS_Store
+.idea
+
+*.sqlite3
