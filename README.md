@@ -112,5 +112,21 @@ Go to `http://localhost:9090` to see the prometheus UI. Check the `Targets` tab 
 
 ## How to use the app
 
-You can go directly to the API docs at `http://localhost:8000/meter/docs` to see the API docs.
-TODO
+The first time you run it you may need to create a superuser. You can do it with `python manage.py createsuperuser`.
+Check the migrations folder to see the initial data.
+
+```bash
+$ python manage.py makemigrations
+$ python manage.py makemigrations meter # if you are using a different app name
+$ python manage.py migrate
+$ python manage.py createsuperuser
+```
+
+After running the required commands for creating a super user and the required migrations, you can go directly to the API docs at `http://localhost:8000/meter/docs` to see the API docs.
+There is an admin endpoint at `http://localhost:8000/admin` where you can see the data.
+
+To import the data from the required file, you can use the following command:
+
+```bash
+$ python manage.py importer data/DTC5259515123502080915D0010.uff
+```
