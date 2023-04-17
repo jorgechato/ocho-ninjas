@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django_prometheus',
     'health_check',
     'health_check.contrib.migrations',
+    
+    'meter',
 ]
 
 MIDDLEWARE = [
