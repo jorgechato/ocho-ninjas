@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocho
+  labels:
+    app: ocho
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: ocho
+  template:
+    metadata:
+      labels:
+        app: ocho
+    spec:
+      containers:
+      - name: ocho
+        image: jorgechato/ocho:1.0.0
+        imagePullPolicy: Never
+        env:
+        - name: DEBUG
+          value: "False"
+        - name: SECRET_KEY
+          secret:
+            secretName: ocho_secret_key
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /health-check
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 20
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /health-check
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+      # TODO: needed for the DB connection
+      # imagePullSecrets:
+        # - name:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocho-service
+spec:
+  ports:
+  - port: 8000
+  selector:
+    app: ocho
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ocho-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+    # uncomment this line if you have a cloud k8s with DNS rules
+    # host: ocho.k8s
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ocho-service
+            port:
+              number: 8000
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ocho
+  namespace: default # change to according namespace
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ocho
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 60
