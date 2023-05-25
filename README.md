@@ -1,4 +1,4 @@
-# Ocho by [Jorge Chato Astrain](https://whatisjorgedoing.today)
+# Ocho
 
 An implementation of `dtc catalogue` for the specification of the D0010 data.
 
